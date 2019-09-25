@@ -1,6 +1,5 @@
-import python_maybe.maybe as M
+import krogon_istio.maybe as M
 from typing import List
-from python_maybe.nullable import nmap, nlist
 
 
 def gateway_host(service_name: str, host: str):
@@ -47,11 +46,11 @@ def create_virtual_service_template(
         'spec': {
             'hosts': [host_url],
             'gateways': [gateway_name],
-            'http': nlist([
+            'http': M.nlist([
                 {'route': [{
-                    'destination': nmap({
+                    'destination': M.nmap({
                         'host': '{}{}'.format(service_name, service_dns_suffix)
-                    }).append_if_value('port', port | M.map | (lambda x: {'number': x})).to_map()
+                    }).append_if_value('port', M.map(port, (lambda x: {'number': x}))).to_map()
                 }]},
             ]).to_list()
         }

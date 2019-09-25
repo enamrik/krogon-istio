@@ -6,7 +6,6 @@ authors = ["Kirmanie L Ravariere <enamrik@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-python-maybe = { git = "ssh://git@github.com/enamrik/python-maybe.git", tag = "0.0.1" }
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.1"
