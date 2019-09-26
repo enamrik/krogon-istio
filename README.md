@@ -2,8 +2,17 @@
 
 ## Installation
 
+Setup your virtual environment:
+
 ```bash
-pip install -e git+ssh://git@github.com/enamrik/krogon-istio.git#egg=krogon
+	pip install virtualenv
+	virtualenv .venv  --no-site-packages
+```
+
+Install Krogon-Istio:
+
+```bash
+pip install -e "git+ssh://git@github.com/enamrik/krogon-istio.git#egg=krogon-istio"
 ```
 
 ## Usage
