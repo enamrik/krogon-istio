@@ -156,3 +156,42 @@ def test_can_set_retries():
             ]
         }
     })
+
+
+def test_can_virtual_service_name():
+    external_host = "some-dns-host"
+    service_name = 'virtual-service-name'
+    virtual_service_name = "service-name"
+    gateway_name = "cluster-gateway"
+    port = 8000
+
+    template = gateway_host(virtual_service_name, external_host).with_port(port) \
+        .with_service_name(service_name) \
+        .with_retries(attempts=2)
+
+    results = template.run()
+
+    assert_same_dict(results[0], {
+        'apiVersion': 'networking.istio.io/v1alpha3',
+        'kind': 'VirtualService',
+        'metadata': {'name': virtual_service_name},
+        'spec': {
+            'hosts': [external_host],
+            'gateways': [gateway_name],
+            'http': [
+                {
+                    'route': [{
+                        'destination': {
+                            'host': "{}.default.svc.cluster.local".format(service_name),
+                            'port': {'number': port}
+                        },
+                    }],
+                    'retries': {
+                        'attempts': 2,
+                        'perTryTimeout': '400ms',
+                        'retryOn': 'gateway-error,connect-failure,refused-stream'
+                    }
+                },
+            ]
+        }
+    })
